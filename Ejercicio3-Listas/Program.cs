@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CatalogoDeSoftware
 {
@@ -18,7 +19,7 @@ namespace CatalogoDeSoftware
 
         public override string ToString()
         {
-            return $"ID: {Id} | Nombre: {Nombre} | Versión: {Version}";
+            return $"ID: {Id:000} | Nombre: {Nombre} | Versión: {Version}";
         }
     }
 
@@ -26,7 +27,12 @@ namespace CatalogoDeSoftware
     {
         static void Main()
         {
-            List<Programa> catalogo = new List<Programa>();
+            List<Programa> catalogo = new List<Programa>
+            {
+                new Programa(1, "Visual Studio", "2022"),
+                new Programa(2, "SQL Server", "2019"),
+                new Programa(3, "AutoCAD", "2023")
+            };
             int opcion;
 
             do
@@ -75,22 +81,16 @@ namespace CatalogoDeSoftware
             int id;
             string nombre, version;
 
-            while (true)
+            // El ID se genera automáticamente como el siguiente número consecutivo, formateado a 3 dígitos
+            if (catalogo.Count == 0)
             {
-                Console.Write("Ingrese el ID del programa: ");
-                if (int.TryParse(Console.ReadLine(), out id))
-                {
-                    if (catalogo.Exists(p => p.Id == id))
-                    {
-                        Console.WriteLine("Ya existe un programa con ese ID. Intente con otro.");
-                    }
-                    else break;
-                }
-                else
-                {
-                    Console.WriteLine("Entrada inválida. Debe ingresar un número entero.");
-                }
+                id = 4; // Inicia desde 004
             }
+            else
+            {
+                id = catalogo.Max(p => p.Id) + 1;
+            }
+            Console.WriteLine($"ID asignado automáticamente: {id:000}");
 
             do
             {
